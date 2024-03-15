@@ -1,4 +1,4 @@
-import Database from "./database/mysql";
+import Database from './database/mysql';
 
 export class Products {
   constructor () {
@@ -6,13 +6,13 @@ export class Products {
   }
 
   async getProductIdByReference (reference) {
-    const query =`
+    const query = `
       SELECT id
       FROM products
       WHERE 
         prd_referencia = ? AND
         excluido = 0
-    `
+    `;
     try {
       const id = await this.db.query(query, [reference]);
       return id[0];
@@ -23,7 +23,7 @@ export class Products {
   }
 
   async updateManyStocks (productsStocks) {
-    console.log('----------PEGANDO IDS DOS PRODUTOS----------')
+    console.log('----------PEGANDO IDS DOS PRODUTOS----------');
     const productsIds = await Promise.all(productsStocks.map(async ({ reference }) => {
       const productId = await this.getProductIdByReference(reference);
       return productId;
@@ -32,23 +32,24 @@ export class Products {
     const productsIdsStocks = productsIds.map((productId, index) => ({
       productId,
       stock: productsStocks[index].stock
-    })); 
+    }));
 
-    console.log('----------ATUALIZANDO ESTOQUES----------')
+    console.log('----------ATUALIZANDO ESTOQUES----------');
     const promises = productsIdsStocks.map(async ({ productId, stock }, i) => {
       await this.updateStock(productId, stock);
-      console.log(`Estoque do produto ${productId} atualizado para ${stock} - ${i} de ${productsIdsStocks.length}`)
+
+      // eslint-disable-next-line max-len
+      console.log(`Estoque do produto ${productId} atualizado para ${stock} - ${i} de ${productsIdsStocks.length}`);
     });
 
     try {
       await Promise.all(promises);
-      console.log('----------ESTOQUES ATUALIZADOS----------')
+      console.log('----------ESTOQUES ATUALIZADOS----------');
       process.exit();
     } catch (error) {
       console.error('Erro ao atualizar estoques:', error);
       throw error;
     }
-
   }
 
   async updateStock (productId, stock) {
@@ -57,7 +58,7 @@ export class Products {
       SET ifp_estoque_interno = ?
       WHERE
         fk_produtos = ?
-    `
+    `;
     const values = [stock, productId];
 
     try {
@@ -67,5 +68,4 @@ export class Products {
       throw error;
     }
   }
- 
 }
