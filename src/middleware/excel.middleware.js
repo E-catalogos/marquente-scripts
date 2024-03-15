@@ -18,7 +18,6 @@ export class ExcelMiddleware {
     this.upload = multer({ storage });
 
     this.validateFile = this.validateFile.bind(this);
-    this.validateSheet = this.validateSheet.bind(this);
   }
 
   verifyDir () {

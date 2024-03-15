@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ExcelUtils } from '../utils/excelTransform';
+import { ExcelUtils } from '../utils/excelTransform.js';
 
 export class ExcelController {
   constructor () {

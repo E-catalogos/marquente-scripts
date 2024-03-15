@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { ExcelController } from '../controller/excel.controller';
-import { ExcelMiddleware } from '../middleware/excel.middleware';
+import { ExcelController } from '../controller/excel.controller.js';
+import { ExcelMiddleware } from '../middleware/excel.middleware.js';
 
 const router = Router();
 
@@ -13,3 +13,5 @@ router.post(
   excelMiddleware.validateFile,
   (req, res) => excelController.upload(req, res)
 );
+
+export default router;
