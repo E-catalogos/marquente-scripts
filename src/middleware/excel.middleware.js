@@ -8,10 +8,12 @@ export class ExcelMiddleware {
 
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        const uploadDir = path.resolve('src/uploads');
+        cb(null, uploadDir);
       },
       filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now());
+        const suffix = Date.now();
+        cb(null, 'file-' + suffix + path.extname(file.originalname));
       }
     });
 
@@ -32,8 +34,11 @@ export class ExcelMiddleware {
   }
 
   validateFile (req, res, next) {
-    const sheetTypes = ['application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+    const sheetTypes = [
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/csv'
+    ];
 
     if (!req.file) {
       return res.status(400).json({ message: 'Adicione um arquivo' });

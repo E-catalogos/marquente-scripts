@@ -9,7 +9,7 @@ export class ExcelController {
   async upload (req, res) {
     const excelFile = req.file;
     const transformedJSON = this.utils
-      .transformProductStocksToJSON(excelFile.path, 'reference', 'stock');
+      .transformProductStocksToJSON(excelFile.path, 'Referencia', 'ESTOQUE');
     fs.writeFileSync('src/data/productStocks.json', JSON.stringify(transformedJSON));
     res.status(200).json({ message: 'Arquivo enviado com sucesso' });
   }
